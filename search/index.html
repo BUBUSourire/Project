@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+    <div id="dvObj"></div>
+</main>
+<script>
+    function my$(id) {
+        return document.getElementById(id);
+    };
+    var keys = [
+        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+    ]
+    var hash = {
+        'q': 'qq.com',
+        'w': 'baidu.com',
+        'e': 'lel.me',
+        'r': 'renren.com',
+        't': 'tianya.com',
+        'y': 'youtube.com',
+        'u': 'uc.com',
+        'a': 'acfun.tv',
+        's': 'sohu.com',
+        'm': 'www.mcdonalds.com.cn'
+    }
+    //刷新的到新hash，首先取出localStorage中的bag中对应的hash，若不是空，则进行变更内容的覆盖
+    var hashInLocalStorage=JSON.parse(localStorage.getItem('bag')||'null');
+    if (hashInLocalStorage){
+        hash=hashInLocalStorage;
+    }
+    //循环遍历keys
+    for (var i = 0; i < keys.length; i++) {
+        //创建div
+        var div1 = document.createElement("div");
+        my$("dvObj").appendChild(div1);
+        //存储三个长度不一的数组数组
+        var rows = keys[i];
+        //循环遍历rows
+        for (var j = 0; j < rows.length; j++) {
+            var kbd1 = document.createElement("kbd");//创建按键
+            div1.appendChild(kbd1);
+            kbd1.textContent = rows[j];
+            var btn = document.createElement("button");
+            kbd1.appendChild(btn);
+            btn.textContent = "Edit";
+            btn.id=rows[j];
+            btn.onclick = function (ev) {
+                key=ev['target']['id'];
+                click=prompt("请输入对应的网址");
+                hash[key]=click;//hash变更
+                localStorage.setItem('bag',JSON.stringify(hash));//只要hash变更，就将变更的那个内容存储到bag中
+            }
+        }
+    }
+    //创建键盘监听事件
+    document.onkeydown = function (ev) {
+        var key = ev['key'];//q w e ..  此处的字符串key来自ev中
+        var website = hash[key];
+        // location.href=website;  //当前页面打开
+        window.open('http://' + website, '_blank');
+    };
+</script>
+</body>
+
+</html>
