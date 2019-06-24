@@ -57,7 +57,7 @@
         //创建div
         var div1 = tag("div");
         my$("dvObj").appendChild(div1);
-        //存储三个长度不一的数组数组
+        //rows存储三个长度不一的数组数组
         var rows = keys[i];
         //循环遍历rows
         for (var j = 0; j < rows.length; j++) {
@@ -101,7 +101,7 @@
         }
     }
 
-    //3.创建键盘监听事件------------------------------------------------
+    //3.创建键盘监听事件--------------------------------------------------------
     document.onkeydown = function (ev) {
         var web = ev['key'];//q w e ..  此处的字符串key来自ev中。获取按键
         var website = hash[web];//获取对应的按键对应的hash中的网址
