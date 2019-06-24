@@ -23,7 +23,7 @@ main {
     cursor: pointer;
 
 }
-kbd {
+.kbd1 {
     border: 1px solid #ccc;
     border-radius: 8px;
     display: inline-block;
@@ -36,7 +36,7 @@ kbd {
     font-weight: 700;
     position: relative;
 }
-kbd:hover {
+.kbd1:hover {
     background: #eee;
     color: #071F54;
 }

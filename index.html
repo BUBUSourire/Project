@@ -49,14 +49,15 @@
         for (var j = 0; j < rows.length; j++) {
             var kbd1 = document.createElement("kbd");//创建按键
             div1.appendChild(kbd1);
+            kbd1.className="kbd1";
             kbd1.textContent = rows[j];
             var btn = document.createElement("button");
             kbd1.appendChild(btn);
             btn.textContent = "Edit";
             btn.id=rows[j];
             btn.onclick = function (ev) {
-                key=ev['target']['id'];
-                click=prompt("请输入对应的网址");
+                var key=ev['target']['id'];
+                var click=prompt("请输入对应的网址");
                 hash[key]=click;//hash变更
                 localStorage.setItem('bag',JSON.stringify(hash));//只要hash变更，就将变更的那个内容存储到bag中
             }
