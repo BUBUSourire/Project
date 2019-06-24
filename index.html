@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>导航</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,6 +16,15 @@
     function my$(id) {
         return document.getElementById(id);
     };
+    function getFromLocalStorage(name) {
+        return JSON.parse(localStorage.getItem(name)||'null');
+    }
+    function tag(tagName){
+        return document.createElement(tagName);
+    }
+
+    //1.初始化数据-----------------------------------------------------
+
     var keys = [
         ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
         ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
@@ -33,44 +42,72 @@
         's': 'sohu.com',
         'm': 'www.mcdonalds.com.cn'
     }
+
+    //2.生成键盘-----------------------------------------------------
+
     //刷新的到新hash，首先取出localStorage中的bag中对应的hash，若不是空，则进行变更内容的覆盖
-    var hashInLocalStorage=JSON.parse(localStorage.getItem('bag')||'null');
+    // var hashInLocalStorage=JSON.parse(localStorage.getItem('bag')||'null');
+    var hashInLocalStorage=getFromLocalStorage("bag");
     if (hashInLocalStorage){
         hash=hashInLocalStorage;
     }
+
     //循环遍历keys
     for (var i = 0; i < keys.length; i++) {
         //创建div
-        var div1 = document.createElement("div");
+        var div1 = tag("div");
         my$("dvObj").appendChild(div1);
         //存储三个长度不一的数组数组
         var rows = keys[i];
         //循环遍历rows
         for (var j = 0; j < rows.length; j++) {
-            var kbd1 = document.createElement("kbd");//创建按键
+
+            //创建每个rows里面的各个按键
+            var kbd1 = tag("kbd");
             div1.appendChild(kbd1);
             kbd1.className="kbd1";
-            kbd1.textContent = rows[j];
-            var btn = document.createElement("button");
+            var span=tag("span");
+            kbd1.appendChild(span)
+            span.textContent = rows[j];
+            span.className="span";
+
+            //创建每个按键里面的button编辑按钮
+            var btn = tag("button");
             kbd1.appendChild(btn);
             btn.textContent = "Edit";
-            btn.id=rows[j];
+            btn.id=rows[j];//为每个按钮注册对应的id，id名跟rows数组中的值相对应
+
+            //注册按钮点击事件
             btn.onclick = function (ev) {
+                //当前的这个按钮弹出对应的对话框，用户输入网址
                 var key=ev['target']['id'];
                 var click=prompt("请输入对应的网址");
-                hash[key]=click;//hash变更
-                localStorage.setItem('bag',JSON.stringify(hash));//只要hash变更，就将变更的那个内容存储到bag中
+                //如果用户输入的网址存在，则刷新页面
+                if (click){
+                    window.location.href=window.location.href;
+                    window.location.reload;
+                }
+
+                //hash变更
+                hash[key]=click;//当前的这个按键的网址替换成用户输入的
+                localStorage.setItem('bag',JSON.stringify(hash));//将变更的那个内容存储到bag中
             }
+
+            //创建按键里面的ico图标
+            var ico=tag("img");
+            kbd1.appendChild(ico);
+            ico.src="http://www.google.com/s2/favicons?domain="+hash[rows[j]];//获取rows里面对应的按键字母，再通过这个字母获取hash里面对应的网址
+            ico.className="ico";
         }
     }
-    //创建键盘监听事件
+
+    //3.创建键盘监听事件------------------------------------------------
     document.onkeydown = function (ev) {
-        var key = ev['key'];//q w e ..  此处的字符串key来自ev中
-        var website = hash[key];
+        var web = ev['key'];//q w e ..  此处的字符串key来自ev中。获取按键
+        var website = hash[web];//获取对应的按键对应的hash中的网址
         // location.href=website;  //当前页面打开
         window.open('http://' + website, '_blank');
     };
 </script>
 </body>
-
 </html>

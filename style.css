@@ -56,3 +56,15 @@ kbd:hover button {
     display: inline-block;
     cursor: pointer;
 }
+.ico {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+}
+.span {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+}
